@@ -14,31 +14,45 @@ namespace assign11.API.Controllers
         [HttpGet("AllBooks")]
         public IActionResult GetBooks(int pageSize = 5, int pageNum = 1, string sortOrder = "asc")
         {
-            var bookQuery = _bookContext.Books.AsQueryable(); // Start with a queryable collection
+            var bookList = _bookContext.Books
+                .ToList(); // Load everything into a List
 
+            // Apply sorting
             if (sortOrder.ToLower() == "asc")
             {
-                bookQuery = bookQuery.OrderBy(b => b.Title);
+                bookList = bookList.OrderBy(b => b.Title).ToList();
             }
             else
             {
-                bookQuery = bookQuery.OrderByDescending(b => b.Title);
+                bookList = bookList.OrderByDescending(b => b.Title).ToList();
             }
 
-            var bookList = bookQuery
+            // Apply pagination
+            var paginatedBooks = bookList
                 .Skip((pageNum - 1) * pageSize)
                 .Take(pageSize)
                 .ToList();
 
-            var totalNumBooks = _bookContext.Books.Count();
+            var totalNumBooks = bookList.Count; // Count from the already loaded list
 
             var exportObject = new
             {
-                Books = bookList,
+                Books = paginatedBooks,
                 TotalNumBooks = totalNumBooks
             };
 
             return Ok(exportObject);
+        }
+
+        [HttpGet("GetProjectTypes")]
+        public IActionResult GetProjectTypes ()
+        {
+            var bookTypes = _bookContext.Books
+                .Select(p => p.Category)
+                .Distinct()
+                .ToList();
+
+            return Ok(bookTypes);
         }
 
     }

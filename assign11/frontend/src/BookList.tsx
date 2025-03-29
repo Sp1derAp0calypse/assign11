@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import {Book} from './types/Book'
 
-function BookList () {
+function BookList (selectedCategories): {selectedCategories: string[]} {
 
     const [books, setBooks] = useState<Book[]>([]);
     const [pageSize, setPageSize] = useState<number>(5);
@@ -24,9 +24,6 @@ function BookList () {
 
     return (
         <>
-            <h1>Books</h1>
-            <br />
-
             <label>
                 Sort by name:
                 <select value={sortOrder} onChange={(e) => setSortOrder(e.target.value)}>
