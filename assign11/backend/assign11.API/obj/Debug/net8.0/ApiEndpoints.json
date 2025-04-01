@@ -21,14 +21,19 @@
         "Name": "sortOrder",
         "Type": "System.String",
         "IsRequired": false
+      },
+      {
+        "Name": "bookCategories",
+        "Type": "System.Collections.Generic.List\u00601[[System.String, System.Private.CoreLib, Version=8.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]",
+        "IsRequired": false
       }
     ],
     "ReturnTypes": []
   },
   {
     "ContainingType": "assign11.API.Controllers.BookController",
-    "Method": "GetProjectTypes",
-    "RelativePath": "Book/GetProjectTypes",
+    "Method": "GetBookCategories",
+    "RelativePath": "Book/GetBookCategories",
     "HttpMethod": "GET",
     "IsController": true,
     "Order": 0,

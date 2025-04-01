@@ -36,6 +36,16 @@
               "type": "string",
               "default": "asc"
             }
+          },
+          {
+            "name": "bookCategories",
+            "in": "query",
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
           }
         ],
         "responses": {
@@ -45,7 +55,7 @@
         }
       }
     },
-    "/Book/GetProjectTypes": {
+    "/Book/GetBookCategories": {
       "get": {
         "tags": [
           "Book"

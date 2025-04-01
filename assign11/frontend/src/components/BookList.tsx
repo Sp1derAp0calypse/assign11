@@ -1,7 +1,10 @@
 import { useEffect, useState } from 'react';
-import {Book} from './types/Book'
+import {Book} from '../types/Book'
+import { useCart } from '../context/CartContext'
+import { useNavigate } from 'react-router-dom'
+import { CartItem } from '../types/CartItem'
 
-function BookList (selectedCategories): {selectedCategories: string[]} {
+function BookList ({selectedCategories} : {selectedCategories: string[]}) {
 
     const [books, setBooks] = useState<Book[]>([]);
     const [pageSize, setPageSize] = useState<number>(5);
@@ -9,18 +12,35 @@ function BookList (selectedCategories): {selectedCategories: string[]} {
     const [totalItems, setTotalItems] = useState<number>(0);
     const [totalPages, setTotalPages] = useState<number>(0);
     const [sortOrder, setSortOrder] = useState<string>("asc");
+    const { addToCart } = useCart();
+    const navigate = useNavigate();
+
+    const handleAddToCart = (book: Book) => {
+        const newItem: CartItem = {
+            bookId: book.bookId,
+            bookName: book.title,
+            price: book.price}
+            addToCart(newItem);
+            navigate('/cart');
+        }
 
     useEffect(() => {
         const fetchBooks = async () => {
-            const response = await fetch(`https://localhost:5000/Book/AllBooks?pageSize=${pageSize}&pageNum=${pageNum}&sortOrder=${sortOrder}`);
+            const categoryParams = selectedCategories
+            .map((cat) => `bookCategories=${encodeURIComponent(cat)}`)
+            .join('&');
+
+            const response = await fetch(
+                `https://localhost:5000/Book/AllBooks?pageSize=${pageSize}&pageNum=${pageNum}&sortOrder=${sortOrder}${selectedCategories.length ? `&${categoryParams}` : ''}`
+            );
             const data = await response.json();
             setBooks(data.books);
             setTotalItems(data.totalNumBooks);
-            setTotalPages(Math.ceil(totalItems / pageSize));
+            setTotalPages(Math.ceil(data.totalNumBooks / pageSize)); 
         }
 
         fetchBooks();
-    }, [pageSize, pageNum, totalItems, sortOrder])
+    }, [pageSize, pageNum, totalItems, sortOrder, selectedCategories])
 
     return (
         <>
@@ -45,6 +65,8 @@ function BookList (selectedCategories): {selectedCategories: string[]} {
                         <li><strong>Page Count: </strong>{p.pageCount}</li>
                         <li><strong>Price: </strong>${p.price}</li>
                     </ul>
+
+                    <button className="btn btn-success" onClick={() => handleAddToCart(p)}>Add to cart</button>
                 </div>
             </div>
         )}

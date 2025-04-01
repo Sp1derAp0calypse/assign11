@@ -12,9 +12,16 @@ namespace assign11.API.Controllers
         public BookController(BookDbContext temp) => _bookContext = temp;
 
         [HttpGet("AllBooks")]
-        public IActionResult GetBooks(int pageSize = 5, int pageNum = 1, string sortOrder = "asc")
+        public IActionResult GetBooks(int pageSize = 5, int pageNum = 1, string sortOrder = "asc", [FromQuery] List<string> bookCategories = null)
         {
-            var bookList = _bookContext.Books
+            var query = _bookContext.Books.AsQueryable();
+
+            if (bookCategories != null && bookCategories.Any())
+            {
+                query = query.Where(b => bookCategories.Contains(b.Category));
+            }
+
+            var bookList = query
                 .ToList(); // Load everything into a List
 
             // Apply sorting
@@ -27,13 +34,13 @@ namespace assign11.API.Controllers
                 bookList = bookList.OrderByDescending(b => b.Title).ToList();
             }
 
+            var totalNumBooks = bookList.Count; // Count from the already loaded list
+
             // Apply pagination
             var paginatedBooks = bookList
                 .Skip((pageNum - 1) * pageSize)
                 .Take(pageSize)
                 .ToList();
-
-            var totalNumBooks = bookList.Count; // Count from the already loaded list
 
             var exportObject = new
             {
@@ -44,11 +51,11 @@ namespace assign11.API.Controllers
             return Ok(exportObject);
         }
 
-        [HttpGet("GetProjectTypes")]
-        public IActionResult GetProjectTypes ()
+        [HttpGet("GetBookCategories")]
+        public IActionResult GetBookCategories ()
         {
             var bookTypes = _bookContext.Books
-                .Select(p => p.Category)
+                .Select(b => b.Category)
                 .Distinct()
                 .ToList();
 

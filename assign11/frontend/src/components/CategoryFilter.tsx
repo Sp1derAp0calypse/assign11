@@ -8,13 +8,12 @@ function CategoryFilter({
     selectedCategories: string[];
     setSelectedCategories: (categories: string[]) => void;
 }) {
-
     const [categories, setCategories] = useState<string[]>([])
 
     useEffect(() => {
         const fetchCategories = async () => {
             try {
-            const response = await fetch('https://localhost:5000/Book/GetProjectTypes');
+            const response = await fetch('https://localhost:5000/Book/GetBookCategories');
             const data = await response.json()
             console.log('shoulda worked:', data)
             setCategories(data)
@@ -27,7 +26,9 @@ function CategoryFilter({
     }, [])
 
     function handleCheckboxChange ({target}: {target: HTMLInputElement}) {
-        const updatedCategories = selectedCategories.includes(target.value) ? selectedCategories.filter(c => c !== target.value) : [...selectedCategories, target.value];
+        const updatedCategories = selectedCategories.includes(target.value)
+        ? selectedCategories.filter(c => c !== target.value)
+        : [...selectedCategories, target.value];
         setSelectedCategories(updatedCategories);
     }
 
