@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("assign11.API")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+7ffa73d87c274e69c69edfc8b44ee88c6959e14c")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+06f2864bdae717e4f89c72b4ce486a2afbc7e9e2")]
 [assembly: System.Reflection.AssemblyProductAttribute("assign11.API")]
 [assembly: System.Reflection.AssemblyTitleAttribute("assign11.API")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
