@@ -16,7 +16,7 @@ builder.Services.AddDbContext<BookDbContext>(options =>
 builder.Services.AddCors(options =>
 options.AddPolicy("AllowReactApp",
 policy => {
-    policy.AllowAnyHeader()
+    policy.AllowAnyOrigin()
         .AllowAnyMethod()
         .AllowAnyHeader();
 }));
