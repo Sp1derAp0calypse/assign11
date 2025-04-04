@@ -5,7 +5,8 @@ interface FetchBooksResponse {
   totalNumBooks: number;
 }
 
-const API_URL = 'https://localhost:5000/Book';
+const API_URL =
+  'https://assignment13-backend-bhfsaqdyece7hxcq.eastus-01.azurewebsites.net/Book';
 
 export const fetchBooks = async (
   pageSize: number,
